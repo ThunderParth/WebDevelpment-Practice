@@ -1,0 +1,563 @@
+const express = require("express")
+const app= express();
+const port=3004
+const mysql = require("./connection").con
+app.set("view engine","hbs");
+app.set("views","./views")
+app.use(express.static(__dirname + " /public"))
+app.get(app.get("/",(req,res) => {
+    res.render("index")  
+
+}));
+app.get(app.get("/add",(req,res) => {
+    res.render("add")  
+
+}));
+
+app.get(app.get("/search",(req,res) => {
+    res.render("search")  
+
+}));
+
+app.get(app.get("/update",(req,res) => {
+    res.render("update")  
+
+}));
+
+app.get(app.get("/delete",(req,res) => {
+    res.render("delete")  
+
+}));
+
+app.get(app.get("/view",(req,res) => {
+    let qry = "select * from test ";
+    mysql.query(qry,(err, results) => {
+        if(err) throw err
+        else{
+            res.render("view",{data: results});
+        }
+
+    });
+
+}));
+
+app.get("/addstudent",(req, res)=> {
+    //fetch data all detail of query ll be stored
+
+    const {name, phone, email, gender} = req.query
+
+    //sanitization xss..
+    let qry = "select * from test where emailid=? or phoneno=?";
+    mysql.query(qry,[email, phone], (err, results) => {
+        if(err)
+         throw err
+
+        else {
+            if (results.length > 0){
+                res.render("add",{checkmesg: true})
+
+            }
+            else{
+                //insert query
+                let qry2 = "insert into test values(?,?,?,?)";
+                mysql.query(qry2,[name,phone,email,gender],(err, results) =>{
+                   if(results.affectedRows>0) {
+                       res.render("add",{mesg: true})
+                   }
+
+                })
+            }
+        }
+    })
+    
+});
+
+app.get("/searchstudent", (req, res) => {
+    const { phone } = req.query;
+    let qry="select * from test where phoneno=?";
+    mysql.query(qry,[phone], (err, results) => {
+if(err) throw err
+else{
+    if(results.length > 0){
+        res.render("search",{mesg1:true, mesg2: false})
+
+    }else{
+        res.render("search",{mesg1:false, mesg2: true})
+    }
+}
+    });
+})
+
+app.get("/updatesearch", (req, res) => {
+
+    const { phone } = req.query;
+
+    let qry="select * from test where phoneno=?";
+    mysql.query(qry,[phone], (err, results) => {
+if(err) throw err
+else{
+    if(results.length > 0){
+        res.render("update",{mesg1:true, mesg2: false, data: results })
+
+    }else{
+        res.render("update",{mesg1:false, mesg2: true})
+    }
+}
+    });
+
+})
+app.get("/updatestudent", (req, res)  => {
+
+    const { phone, name, gender} = req.query;
+    let qry ="update test set username=?, gender=? where phoneno=?";
+    mysql.query(qry,[name, gender, phone], (err, results) => {
+        if (err) throw err
+        else{
+            if(results.affectedRows > 0){
+                res.render("update",{umesg: true})
+            }
+        }
+    })
+});
+
+app.get("/removestudent", (req,res) => {
+    //fetch data
+    const { phone } = req.query;
+
+    let qry="delete from test where phoneno=?";
+    mysql.query(qry,[phone], (err, results) => {
+if(err) throw err
+else{
+    if(results.affectedRows > 0){
+        res.render("delete",{mesg1:true, mesg2: false})
+
+    }else{
+        res.render("delete",{mesg1:false, mesg2: true})
+
+    }
+
+}
+    });
+
+})
+app.listen(port, (err) => {
+    if(err)
+
+     throw err
+
+    else
+     console.log("Server is running at port %d:",port);
+});
+
+#########################
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <form action="/addstudent">
+            <h3>ADD STUDENT</h3>
+            <hr>
+
+            <label for="name"><b>Student Name</b></label>
+            <input type="text" placeholder="Enter your name" name="name" id="name" required>
+
+            <label for="phn"><b>Phone no</b></label>
+            <input type="phone" placeholder="Enter Phone No" name="phone" id="phone" required>
+
+            <label for="eml-id"><b>Email ID</b></label>
+            <input type="email" placeholder="Enter your Email ID" name="email" id="email" required>
+
+            <div class="gender_g">
+                <strong>Gender</strong>
+                <input type="radio" name="gender" id="" value="Male">Male
+                <input type="radio" name="gender" id="" value="Female">Female
+            </div>
+            <button type="submit" class="registerbtn">ADD STUDENT</button>
+
+            <a href="./" style="color:rgb(248, 244, 244)">BACK TO HOME</a><br>
+
+            {{#if mesg}}
+            <h3>Data Insert</h3>
+            {{/if}}
+
+            {{#if checkmesg}}
+            <h3>already ther</h3>
+            {{/if}}
+
+            
+
+
+        </form>
+    </div>
+</body>
+</html>
+
+########################
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <form action="/searchstudent" >
+            <h3>SEARCH STUDENT</h3>
+            <hr>
+
+            <label for="phn"><b>Phone No</b></label>
+            <input type="phone" placeholder="type phone no to be searched" name="phone" id="phone" required>
+            <button type="submit" class="registerbtn">SEARCH STUDENT</button>
+            <a href="./" style="color: rgb(248, 244, 244);">BACK TO HOME PAGE</a>
+            <br>
+            {{#if mesg1}}
+            <h3>Data found!!!</h3>
+            {{/if}}
+
+            {{#if mesg2}}
+            <h3>Data not found</h3>
+            {{/if}}
+        </form>
+
+
+
+
+
+    </div>
+    
+</body>
+</html>
+
+
+######################
+!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+    
+</head>
+<body>
+    <div class="">
+        <form action="/updatesearch">
+            <h3>SEARCH STUDENT</h3>
+            <hr>
+
+            <label for="phn"><b>Phone No</b></label>
+            <input type="phone" style="width:200px;" placeholder="type phone no to be searched" name="phone" id="phone" required>
+
+            <button type="submit" class="registerbtn">SEARCH STUDENT</button>
+            <a href="./" style="color: rgb(248, 244, 244);">BACK TO HOME PAGE</a>
+            <br>
+
+            {{#if umesg}}
+        <h3>Data Updated!</h3>
+        {{/if}}
+
+            
+
+            {{#if mesg2}}
+            <h3>Data not found</h3>
+            {{/if}}
+        </form>
+    </div>
+
+
+    {{!-- search form design --}}
+    {{#if mesg1}}
+            <div class="container">
+        <form action="/updatestudent">
+            <h3>UPDATE STUDENT</h3>
+            <hr>
+
+            {{#data}}
+
+            <label for="name"><b>Student Name</b></label>
+            <input type="text" placeholder="Enter your name" name="name" value="{{username}}" id="name" required>
+
+            <label for="phn"><b>Phone no</b></label>
+            <input type="phone" placeholder="Enter Phone No" name="phone" value="{{phoneno}}" id="phone" required readonly>
+
+            <label for="eml-id"><b>Email ID</b></label>
+            <input type="email" placeholder="Enter your Email ID" name="email" value="{{emailid}}"id="email" required readonly>
+
+            <div class="gender_g">
+                <strong>Gender</strong>
+                <input type="radio" name="gender" id="" value="Male">Male
+                <input type="radio" name="gender" id="" value="Female">Female
+            </div>
+            <button type="submit" class="registerbtn">UPDATE STUDENT</button>
+
+            {{/data}}
+
+            <a href="./" style="color:rgb(243, 239, 239)">BACK TO HOME</a><br>
+
+            
+
+            
+        
+
+        </form>
+    </div>
+            {{/if}}
+    
+</body>
+</html>
+
+
+###################
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <form action="/removestudent">
+            <h3>DELETE STUDENT</h3>
+            <hr>
+
+            <label for="phn"><b>Phone No</b></label>
+            <input type="phone" placeholder="type phone no to be searched" name="phone" id="phone" required>
+
+            <button type="submit" class="registerbtn">DELETE STUDENT</button>
+            <a href="./" style="color: rgb(248, 244, 244);">BACK TO HOME PAGE</a>
+            <br>
+
+            {{#if mesg1}}
+            <h3>Data deleted!</h3>
+            {{/if}}
+
+            {{#if mesg2}}
+            <h3>Not found!</h3>
+            {{/if}}
+        </form>
+    </div>
+    
+</body>
+</html>
+
+
+
+#####################
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-fQybjgWLrvvRgtW6bFlB7jaZrFsaBXjsOMm/tB9LTS58ONXgqbR9W8oWht/amnpF" crossorigin="anonymous"></script>
+</head>
+<body>
+    
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      
+      <div class="modal-body">
+       <table class="table">
+  <thead>
+    <tr>
+      
+      <th scope="col">Username</th>
+      <th scope="col">Phone No</th>
+      <th scope="col">Email Id</th>
+      <th scope="col">Gender</th>
+    </tr>
+  </thead>
+  <tbody>
+      {{#data}}
+    <tr>
+      <td>{{username}}</td>
+      <td>{{phoneno}}</td>
+      <td>{{emailid}}</td>
+      <td>{{gender}}</td>
+      
+    </tr>
+    {{/data}}
+    
+    
+  </tbody>
+</table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+      <a href="./" style="color:rgb(14, 13, 13)">BACK TO HOME</a><br>
+    </div>
+  </div>
+   
+</div>
+    
+</body>
+
+<script>$(".modal").modal("show")</script>
+</html>
+
+
+###############
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body{
+            display:flex;
+            flex-direction:column;
+            margin:2px;
+
+            background-image: url(hg.jpg);
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+  background-size: cover;
+        }
+        .menu
+        {
+            display:flex;
+            justify-content: space-around;
+            background-color: rgba(51, 51, 51, 0.651);
+            opacity: 0.8;
+        }
+        .menu a{
+            font-size: 20px;
+            font-weight: bolder;
+            color: beige;
+        }
+        h1{
+            color: white;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <h1>NodeJs CRUD Operations</h1>
+    <div class="menu">
+
+        <a href="/add">ADD STUDENT</a>
+        <a href="/search">SEARCH STUDENT</a>
+        <a href="/update">UPDATE STUDENT</a>
+        <a href="/delete">DELETE STUDENT</a>
+        <a href="/view">VIEW STUDENT</a>
+    </div>
+</body>
+</html>
+
+
+##############
+const mysql = require("mysql");
+
+const con = mysql.createConnection({
+    host: "localhost",
+    user:"root",
+    password:"",
+    database: "vibha",
+    port:3306
+});
+
+con.connect((err) =>{
+    if(err) throw err;
+    console.log("connection created");
+})
+
+module.exports.con = con;
+
+
+*{
+    box-sizing: border-box;
+}
+
+/*Add padding to containers*/
+body{
+    width: 100%;
+    height: 100vh;
+    background-color:white;
+    background-attachment: fixed;
+    position: relative;
+}
+
+.container{
+    background-color: rgba(51, 51, 51, 0.651);
+    opacity: 0.8;
+    
+    width: 500px;
+    position: absolute;
+    left: 35%;
+    padding: 10px;
+    top: 10%;
+    border-radius: 10px;
+}
+
+/*Full-width input fields*/
+input[type=text],
+input[type=phone],
+input[type=email]{
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0 22px 0;
+    display: inline-block;
+    border: none;
+    background: #f1f1f1;
+}
+
+input[type=text]:focus,
+input[type=phone]:focus,
+input[type=email]:focus{
+    background-color: #ddd;
+    outline: none;
+}
+
+/*submit button*/
+.registerbtn{
+    background-color:rgb(235, 145, 27);
+    color: white;
+    margin: 8px 0;
+    padding: 6px 8px;
+    border: none;
+    cursor: pointer;
+    opacity: 0.9;
+}
+
+
+/*blue text color to links*/
+a{
+    color: dodgerblue;
+}
+
+/*set grey background color and center text of sign in */
+.signin{
+    background-color: #f1f1f1;
+    text-align: center;
+}
+
+.gender_g{
+    display: flex;
+}

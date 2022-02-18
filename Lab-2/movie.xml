@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE movie SYSTEM "movie.dtd">
+<?xml-stylesheet type="text/xsl" href="movie.xsl"?>
+<movie xsi:noNamespaceSchemaLocation="movie.xsd">
+    <md>
+        <title>Spiderman: Far From Home</title>
+        <year>2019</year>
+        <imdb>7.4</imdb>
+        <rtomatoes>90%</rtomatoes>
+        <director>Jon Watts</director>
+        <genre>Action/Adventure</genre>
+    </md>
+    <md>
+        <title>Ironman</title>
+        <year>2009</year>
+        <imdb>7.9</imdb>
+        <rtomatoes>94%</rtomatoes>
+        <director>Jon Favreau</director>
+        <genre>Action/Adventure</genre>
+    </md>
+    <md>
+        <title>Captain America</title>
+        <year>2013</year>
+        <imdb>6.9</imdb>
+        <rtomatoes>80%</rtomatoes>
+        <director>Joe Johnston</director>
+        <genre>Action/Adventure</genre>
+    </md>
+    <md>
+        <title>Black Widow</title>
+        <year>2021</year>
+        <imdb>6.7</imdb>
+        <rtomatoes>79%</rtomatoes>
+        <director>Cate Shortland</director>
+        <genre>Action/Adventure</genre>
+    </md>
+    <md>
+        <title>Thor</title>
+        <year>2011</year>
+        <imdb>7</imdb>
+        <rtomatoes>77%</rtomatoes>
+        <director>Kenneth Branagh</director>
+        <genre>Action/Fantasy</genre>
+    </md>
+    <md>
+        <title>Avengers</title>
+        <year>2012</year>
+        <imdb>8</imdb>
+        <rtomatoes>91%</rtomatoes>
+        <director>Joss Whedon</director>
+        <genre>Action/Adventure</genre>
+    </md>
+    <md>
+        <title>Shang-Chi</title>
+        <year>2021</year>
+        <imdb>7.5</imdb>
+        <rtomatoes>91%</rtomatoes>
+        <director>Destin Daniel Cretton</director>
+        <genre>Action/Fantasy</genre>
+    </md>
+</movie>

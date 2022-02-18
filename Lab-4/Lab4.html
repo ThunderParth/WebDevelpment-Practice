@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html name="viewport" content="width=device-width, inital-scale=1">
+    <title>Uses of DOM</title>
+    <head>
+        <h1><b><u>Demo Website</u></b></h1></head>
+    <body style="background-image:url(Back.jpg); text-align: center; color:red;">
+        <div>
+        <p id="demo">This text changes after the click on button.</p>
+        <button onclick="change_text()">Change</button>
+        </div>
+        <p><u>The following picture changes on click.</u></p>
+        <img id="myImg" src="Logo.png" width="107" height="98"><br>
+        <button onclick="myFunction()">Change</button>
+        <br><br>
+        <ul class="example" style="text-align:left;">
+            <li class="child">Thunder</li>
+            <li class="child">Storm</li>
+            <li class="child">Fire</li>
+            <li class="child">Storm</li><li class="child">Fire</li>
+            <li class="child">Storm</li><li class="child">Fire</li>
+            <li class="child">Storm</li><li class="child">Fire</li>
+            <li class="child">Storm</li><li class="child">Fire</li>
+            <li class="child">Storm</li>
+          </ul>          
+                <button onclick="ctable()" style="text-align:left;">Change</button>
+                <button onclick="Function()" style="text-align:left;">Another Change</button><br><br>
+                
+                <p id="para1" style="font-size: 150%;">This paragraph will be removed</p>
+                <button onclick="r()" style="text-align:left;">Delete paragraph</button><br><br>
+                <button onclick="cnode()" style="text-align:left;">Change</button>
+                
+        
+        <script>
+            function change_text(){
+                document.getElementById("demo").innerHTML = "You clicked the button, I am new paragraph.";
+            }
+            function myFunction() {
+                document.getElementById("myImg").src = "Logo2.png";
+            }
+            function ctable(){
+                var list = document.getElementsByClassName("example")[0];
+  list.getElementsByClassName("child")[0].innerHTML = "Changed";
+            }
+            function Function() {
+  var list = document.getElementsByTagName("UL")[0];
+  list.getElementsByTagName("LI")[1].innerHTML = "Changed Style";
+  list.getElementsByTagName("LI")[1].style.color = "white";
+  
+}
+function cnode(){
+    var g=document.createElement("H1")
+    var c=document.createTextNode("You created a Child node");
+    g.appendChild(c);
+    document.body.appendChild(g);
+}
+function r(){
+    var myobj = document.getElementById("para1");
+    myobj.remove();
+}
+
+            </script>
+            
+    </body>
+</html>
