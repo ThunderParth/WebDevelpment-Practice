@@ -1,0 +1,31 @@
+body{
+	background-color:violet;
+}
+nav{
+	float: left;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+   }
+nav a{
+	list-style: none;
+	margin-left: 80px;
+	margin-top: 20px;
+	font-size: 20px;
+}
+.para1{
+	margin:auto;
+	width:300px;
+	padding:50px;
+	background-color:grey;
+	border:15px solid green;	
+}
+#footer{
+	position:fixed;
+	left: 0px;
+	bottom: 0px;
+	background-color: brown;
+	width:100%;
+	text-align:center;
+	
+}

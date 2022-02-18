@@ -1,0 +1,17 @@
+#container{
+	width:150px;
+	height:150px;
+	margin:auto;
+}
+.image{
+	width:150px;
+	height:150px;
+	background: url('Logo.png') no-repeat;
+ 	margin auto;
+}
+.image2{
+	width:150px;
+	height:150px;
+	background: url('Logo2.png') no-repeat;
+ 	margin auto;
+}

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE games SYSTEM "games.dtd">
+<?xml-stylesheet type="text/xsl" href="games.xsl"?>
+<games xsi:noNamespaceSchemaLocation="games.xsd">
+    <md>
+        <title>Halo Infinite</title>
+        <year>2014</year>
+        <ESRB>T</ESRB>
+        <IGN>72%</IGN>
+        <Developer>Microsoft Corporation</Developer>
+        <genre>FPS</genre>
+    </md>
+    <md>
+        <title>Halo (1)</title>
+        <year>2001</year>
+        <ESRB>M</ESRB>
+        <IGN>95%</IGN>
+        <Developer>Microsoft Corporation</Developer>
+        <genre>FPS</genre>
+    </md>
+    <md>
+        <title>The Last of us</title>
+        <year>2013</year>
+        <ESRB>R</ESRB>
+        <IGN>97%</IGN>
+        <Developer>The Naughty dog</Developer>
+        <genre>Science Fiction</genre>
+    </md>
+    <md>
+        <title>Resident Evil Village</title>
+        <year>2021</year>
+        <ESRB>M</ESRB>
+        <IGN>80%</IGN>
+        <Developer>Capcom</Developer>
+        <genre>Mystery</genre>
+    </md>
+    <md>
+        <title>Marvel's Spiderman</title>
+        <year>2018</year>
+        <ESRB>8.4</ESRB>
+        <IGN>94%</IGN>
+        <Developer>Insomniac Games</Developer>
+        <genre>Adventure</genre>
+    </md>
+</games>
+

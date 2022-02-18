@@ -1,0 +1,10 @@
+
+<!ELEMENT games (md)>
+<!ELEMENT md (title,year,ESRB,IGN, Developer, genre)>
+<!ELEMENT title (#PCDATA)>
+<!ELEMENT year (#PCDATA)>
+<!ELEMENT ESRB (#PCDATA)>
+<!ELEMENT IGN (#PCDATA)>
+<!ELEMENT Developer (#PCDATA)>
+<!ELEMENT genre (#PCDATA)>
+
